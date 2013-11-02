@@ -12,6 +12,11 @@ function init () {
   );
   camera.position.z = sceneSize;
 
+  var geometry = new THREE.SphereGeometry(sceneSize / 20, 20, 20);
+  var material = new THREE.MeshNormalMaterial();
+  var mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
+
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
 
