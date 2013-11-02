@@ -1,24 +1,25 @@
 var scene, camera, renderer, container, sceneSize, audioContext, masterGain, masterAnalyzer;
+var constraints = { audio: true };
 
 function successCallback (stream) {
   console.log("success");
-  mediaStreamSource = audioContext.createMediaStreamSource();
+  mediaStreamSource = audioContext.createMediaStreamSource(stream);
   init();
 }
 
 function errorCallback () {
-  console.log("err");
+  console.log("err", arguments);
 }
 
 function initAudio () {
   audioContext = new webkitAudioContext();
   masterGain = audioContext.createGainNode();
-  masterAnalyzer = audioContext.createAnalyzer();
+  masterAnalyser = audioContext.createAnalyser();
 
-  masterAnalyzer.connect(masterGain);
+  masterAnalyser.connect(masterGain);
   masterGain.connect(audioContext.destination);
 
-  navigator.getUserMedia(constraints, successCallback, errorCallback);
+  navigator.webkitGetUserMedia(constraints, successCallback, errorCallback); // todo: make non-webkit-specific
 }
 
 function init () {
