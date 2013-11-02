@@ -1,4 +1,25 @@
-var scene, camera, renderer, container, sceneSize;
+var scene, camera, renderer, container, sceneSize, audioContext, masterGain, masterAnalyzer;
+
+function successCallback (stream) {
+  console.log("success");
+  mediaStreamSource = audioContext.createMediaStreamSource();
+  init();
+}
+
+function errorCallback () {
+  console.log("err");
+}
+
+function initAudio () {
+  audioContext = new webkitAudioContext();
+  masterGain = audioContext.createGainNode();
+  masterAnalyzer = audioContext.createAnalyzer();
+
+  masterAnalyzer.connect(masterGain);
+  masterGain.connect(audioContext.destination);
+
+  navigator.getUserMedia(constraints, successCallback, errorCallback);
+}
 
 function init () {
   sceneSize = 100;
@@ -32,4 +53,4 @@ function animate () {
   renderer.render(scene, camera);
 }
 
-init();
+initAudio();
